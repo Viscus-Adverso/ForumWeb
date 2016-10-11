@@ -68,5 +68,19 @@ public class Main {
                     return null;
                 }
         );
+
+        Spark.post(
+                "/create-message",
+                (request, response) -> {
+                    String text = request.queryParams("text");
+                    int replyId = Integer.valueOf(request.queryParams("replyId"));
+                    Session session = request.session();
+                    String name = session.attribute("loginName:");
+                    Message msg = new Message(messages.size(), replyId, name, text);
+                    messages.add(msg);
+                    response.redirect("/");
+                    return null;
+                }
+        );
     }
 }
